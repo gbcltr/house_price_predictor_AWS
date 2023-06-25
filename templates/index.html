@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> House Price Predictor</title>
+    <script>
+        function yrBuiltCategory() {
+          // var yearBuilt = parseInt(document.getElementById("year_built").value);
+          var dropdown = document.getElementById("year_built");
+          var yearBuilt = dropdown.options[dropdown.selectedIndex].value;
+    
+          if (yearBuilt === 0) {
+            yearBuiltCat = 0;
+          } else if (yearBuilt <= 1960 && yearBuilt > 0) {
+            yearBuiltCat = 1;
+          } else if (yearBuilt < 2000 && yearBuilt > 1960) {
+            yearBuiltCat = 2;
+          } else {
+            yearBuiltCat = 3;
+          }
+    
+          document.getElementById("year_built_cat").value = yearBuiltCat;
+          
+          
+        }
+    
+        // Generate options for years from 1900 to 2014
+        document.addEventListener("DOMContentLoaded", function() {
+          var selectElement = document.getElementById("year_built");
+          for (var year = 1900; year <= 2014; year++) {
+            var optionElement = document.createElement("option");
+            optionElement.value = year;
+            optionElement.text = year;
+            selectElement.appendChild(optionElement);
+          }
+        });
+      </script>
+      <script>
+        function storeSelectedValue() {
+          var dropdown = document.getElementById("myDropdown");
+          var selectedValue = dropdown.options[dropdown.selectedIndex].value;
+          
+          // Store the selected value in the hidden text field
+          document.getElementById("hiddenField").value = selectedValue;
+        }
+      </script>
+
+<style>
+    /* Body styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('house_background.jpg'); /* Replace with your background image */
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #5c9dd1;
+    }
+
+    /* Container styles */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+         }
+
+    /* Heading styles */
+    h1 {
+      text-align: center;
+      color: rgb(8, 8, 8);
+      font-size: 24px;
+      margin-top: 20px;
+      padding-left: 100px;
+      padding-right: 100px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      background-color: rgba(131, 110, 228, 0.8); /* Adjust the transparency as needed */
+      background-size: cover;
+      font-size:x-large;
+    }
+
+    /* Paragraph styles */
+    p {
+      color: rgb(8, 8, 8);
+      text-align: center;
+      margin-top: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      font-size: larger;
+    }
+
+    /* Form styles */
+    form {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.8); /* Adjust the transparency as needed */
+      border: 2px solid #000;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+      backdrop-filter: blur(5px); /* Adjust the blur effect as needed */
+      padding-left: 100px;
+      padding-right: 100px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Add more CSS styles for your form elements as needed */
+    /* form label,
+    form input[type="text"] {
+      display: block;
+      margin-bottom: 10px; 
+    } */
+
+    form input[type="submit"] {
+      /* margin-top: 10px; */
+      padding: 20px;
+      width: 150px;
+      font-size: larger;
+    }
+  </style>
+</head>
+<body>
+    <!-- <div class="container"> -->
+    <h1 style="top: 10px;">House Price Predictor</h1>
+   
+ <br><br>
+ 
+    Predicted price of the house based on the information given is :
+    <br>
+
+    {% if result %}
+    <p>{{ result }}</p> 
+{% endif %}
+<br>
+<br>
+    <form method="post" action="/predict">
+        <label> FILL INFORMATION ABOUT THE HOUSE</label>
+        <br>
+        <br>
+        <label>Number of bedrooms</label>
+        <input type="text" name="bedrooms"><br><br>
+
+        <label>Number of bathrooms</label>
+        <input type="text" name="bathrooms"><br><br>
+
+        <label>Total area squaretage of living</label>
+        <input type="text" name="sqrt_living"><br><br>
+
+        <label>Number of floors</label>
+        <input type="text" name="floors"><br><br>
+
+        <label>Does it have waterfront</label>
+        <!-- <input type="text" name="waterfront"><br><br> -->
+        <select id="waterfront" name="waterfront">
+            
+            <option value=1 >yes</option>
+            <option value=0 >no</option>
+            
+            </select>
+        <br>
+        <br>
+        <label>Rate the view from 1 to 5</label>
+        <select id="myDropdown" name="view_score" >
+        <option value="0">select the ratings</option>    
+        <option value=1 >1</option>
+        <option value=2 >2</option>
+        <option value=3 >3</option>
+        <option value=4 >4</option>
+        <option value=5 >5</option>
+        </select> 
+        <!-- <input type="text" id="hiddenField" name="view_score"><br><br> -->
+        <br>
+        <br>
+
+
+        <label>Total area squaretage of above</label>
+        <input type="text" name="sqrt_above"><br><br>
+
+        <label>Total area squaretage of basement</label>
+        <input type="text" name="sqrt_base"><br><br>
+
+      
+
+        <label>year built</label>
+        
+        <!-- <input type="text" id="yearBuilt"><br>  -->
+        <select id="year_built">
+            <option value="0">Select a year</option>
+          </select>
+        <!-- <button onclick="yrBuiltCategory()">Categorize the year</button> -->
+
+        <!-- <div id="yearBuiltCat" name="year_built_cat"></div>-->
+        <input type="text" id = "year_built_cat" name="year_built_cat" style="display: none;"><br><br>
+        <br>
+        <br>
+
+        <label>CLICK BELOW TO GET A PRICE</label><BR>
+        <input type="submit" value="Predict" onclick="yrBuiltCategory()" ><br><br> 
+        <!-- onclick="yrBuiltCategory()" -->
+    </form>
+    <br>
+   
+
+<!-- </div> -->
+</body>
+</html>
